@@ -37,8 +37,11 @@ const show = (req , res , next) => {
 
  const store = (req , res , next) => {
     let newuser = new users({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        phno: req.body.phno
     });
     newuser.save()
     .then(response => {
@@ -59,8 +62,11 @@ const update = (req , res , next) => {
     let userID = req.body.userID;
 
     let updatedData = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        phno: req.body.phno
     }
 
     users.findByIdAndUpdate(userID, {$set : updatedData})
@@ -80,24 +86,22 @@ const update = (req , res , next) => {
 //Update Book By Id
 
 const isExist = (req , res , next) => {
-    let userID = req.body.userID;
-
-    let updatedData = {
-        email: req.body.email,
-        password: req.body.password
-    }
-
-    users.find({email:"akash@gmail.com",password:"anthony"})
+//    console.log("Request : ",req);
+    users.find({ email: req.body.email , password: req.body.password} )
     .then(response => {
-        if(response != null){
+        console.log("Response : ",response)
+        if(response.length > 0){
             res.json({
                 data:true,
-                status:true
+                status:true,
+                message:"Successfully Logged In !"
             })
         }else{
             res.json({
                 data:false,
-                status:false
+                status:false,
+                message:"Invalid Credentials !"
+                
             })
         }
     })
